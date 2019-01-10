@@ -1,0 +1,10 @@
+---
+datadog_agent_user_name: dd-agent
+datadog_agent_user_group: dd-agent
+datadog_agent_varnish_tags: "{{ datadog_agent_tags | default([]) }}"
+datadog_agent_varnish_config:
+  init_config:
+  instances:
+    - varnishstat: /usr/bin/varnishstat
+      varnishadm: /usr/bin/varnishadm
+      tags: "{{ datadog_agent_varnish_tags }}"

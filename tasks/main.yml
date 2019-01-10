@@ -1,0 +1,28 @@
+---
+- name: Add datadog agent user dd-agent to varnish group
+  user:
+    name: "{{ datadog_agent_user_name }}"
+    append: yes
+    groups: varnish
+
+- name: Install datadog agent config for varnish
+  copy:
+    backup: yes
+    content: "{{ datadog_agent_varnish_config | to_nice_yaml }}"
+    mode: 0444
+    owner: "{{ datadog_agent_user_name }}"
+    group: "{{ datadog_agent_user_group }}"
+    dest: /etc/datadog-agent/conf.d/varnish.d/conf.yaml
+  register: install_agent_config
+
+- name: Ensure admin group has passwordless sudo
+  copy:
+    dest: /etc/sudoers.d/29_datadog
+    mode: 0440
+    content: |
+      # Ansible managed
+      dd-agent ALL=(ALL) NOPASSWD:/usr/bin/varnishadm
+
+- name: Restart Datadog agent
+  service: name=datadog-agent state=restarted
+  when: install_agent_config is changed
