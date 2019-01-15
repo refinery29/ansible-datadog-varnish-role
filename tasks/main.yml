@@ -9,7 +9,7 @@
   copy:
     backup: yes
     content: "{{ datadog_agent_varnish_config | to_nice_yaml }}"
-    mode: 0444
+    mode: 0440
     owner: "{{ datadog_agent_user_name }}"
     group: "{{ datadog_agent_user_group }}"
     dest: /etc/datadog-agent/conf.d/varnish.d/conf.yaml
