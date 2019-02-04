@@ -15,7 +15,10 @@
     dest: /etc/datadog-agent/conf.d/varnish.d/conf.yaml
   register: install_agent_config
 
-- name: Ensure admin group has passwordless sudo
+# TODO this doesn't seem to be necessary for the user to run varnishadm,
+# but the datadog agent's varnish integration requires it: 
+# https://github.com/DataDog/integrations-core/blob/master/varnish/datadog_checks/varnish/varnish.py#L146-L147
+- name: Datadog agent user may run varnishadm with priviledges
   copy:
     dest: /etc/sudoers.d/29_datadog
     mode: 0440

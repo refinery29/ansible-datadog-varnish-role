@@ -8,3 +8,9 @@ datadog_agent_varnish_config:
     - varnishstat: /usr/bin/varnishstat
       varnishadm: /usr/bin/varnishadm
       tags: "{{ datadog_agent_varnish_tags }}"
+  logs:
+    - type: file
+      path: /var/log/varnish/varnishncsa.log
+      source: varnish
+      sourcecategory: http_web_access
+      service: varnish
